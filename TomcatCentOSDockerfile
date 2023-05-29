@@ -1,0 +1,16 @@
+# Tomcat running on latest Cent OS image
+# yum install java will not work in latest Cent OS image
+# This will NOT give this error - Error: Failed to download metadata for repo 'appstream': Cannot prepare internal mirrorlist: No URLs in mirrorlist
+
+FROM centos:latest
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum install -y java
+RUN mkdir /opt/tomcat
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.tar.gz .
+RUN tar -xvzf apache-tomcat-9.0.75.tar.gz
+RUN mv apache-tomcat-9.0.75/* /opt/tomcat
+EXPOSE 8080
+CMD ["/opt/tomcat/bin/catalina.sh","run"]
