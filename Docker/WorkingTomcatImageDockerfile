@@ -1,0 +1,5 @@
+# Working tomcat:latest image
+# After spinning a Docker container using this image no need to move contents of webapps.dist to webapps
+
+FROM tomcat:latest
+RUN cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/
